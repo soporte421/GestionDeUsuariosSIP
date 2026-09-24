@@ -1,0 +1,372 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Gestión de Usuarios - Control de Cuentas</title>
+    
+    <!-- Bootstrap 5.3 CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    
+    <!-- Bootstrap Icons -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.0/font/bootstrap-icons.css">
+    
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="./InventarioCuentas.css">
+</head>
+<body>
+
+    <main class="container py-4 min-vh-100 d-flex flex-column justify-content-center">
+        <div class="panel-pro p-4 p-md-5 w-100 mx-auto">
+            
+            <!-- Encabezado y Acciones Principales -->
+            <header class="d-flex flex-wrap justify-content-between align-items-center mb-4 gap-3">
+                <div>
+                    <span class="badge badge-tech mb-2 px-3 py-2 rounded-pill">
+                        <i class="bi bi-people-fill me-1"></i> Administración
+                    </span>
+                    <h1 class="display-6 fw-bold text-gradient mb-0">Control de Usuarios</h1>
+                </div>
+                
+                <div class="d-flex flex-wrap gap-2">
+                    <button type="button" class="btn btn-regresar" onclick="window.location.href='menu.html'">
+                        <i class="bi bi-arrow-left me-2"></i>Volver
+                    </button>
+                    <button type="button" class="btn btn-pro-primary" onclick="abrirModalCrear()">
+                        <i class="bi bi-person-plus-fill me-2"></i>Nuevo Usuario
+                    </button>
+                    <button type="button" class="btn btn-pro-secondary btn-actualizar">
+                        <i class="bi bi-arrow-clockwise me-1"></i>Actualizar
+                    </button>
+                </div>
+            </header>
+
+            <!-- Tabla de Usuarios -->
+            <main class="tabla-scroll custom-scrollbar mb-4">
+                <table id="tablaUsuarios" class="table table-hover align-middle mb-0">
+                    <thead>
+                        <tr>
+                            <th scope="col" class="text-center" style="width: 160px;">Acciones</th>
+                            <th scope="col">Usuario</th>
+                            <th scope="col">Correo Electrónico</th>
+                            <th scope="col" class="text-center">Estado</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td colspan="4" class="text-center py-5 text-muted">
+                                <div class="spinner-border spinner-border-sm text-cyan me-2" role="status"></div>
+                                Cargando usuarios... ⏳
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </main>
+
+        </div>
+    </main>
+
+    <!-- Modal para Crear / Editar Usuario -->
+    <dialog id="modalUsuario" class="modal-dialog-custom">
+        <div class="modal-contenido-custom p-4 p-md-5">
+            <div class="d-flex justify-content-between align-items-center mb-4 border-bottom border-secondary pb-3">
+                <h2 id="modalTitulo" class="h5 fw-bold text-gradient mb-0">
+                    <i class="bi bi-person-gear me-2 text-cyan"></i>Nuevo Usuario
+                </h2>
+                <button type="button" class="btn-close btn-close-white" onclick="cerrarModalUsuario()"></button>
+            </div>
+            
+            <!-- Campo oculto para saber qué fila editar -->
+            <input type="hidden" id="editFilaExcel" value="">
+
+            <div class="row g-3 modal-body-custom">
+                <div class="col-12">
+                    <label for="editUsuario" class="form-label">Usuario</label>
+                    <div class="input-group">
+                        <span class="input-group-text bg-dark-input text-muted border-secondary"><i class="bi bi-person"></i></span>
+                        <input type="text" id="editUsuario" class="form-control" required placeholder="Ej: jperez">
+                    </div>
+                </div>
+
+                <div class="col-12">
+                    <label for="editCorreo" class="form-label">Correo Electrónico</label>
+                    <div class="input-group">
+                        <span class="input-group-text bg-dark-input text-muted border-secondary"><i class="bi bi-envelope"></i></span>
+                        <input type="email" id="editCorreo" class="form-control" required placeholder="usuario@correo.com">
+                    </div>
+                </div>
+
+                <div class="col-12 col-md-6">
+                    <label for="editPass" class="form-label">Contraseña</label>
+                    <div class="input-group">
+                        <span class="input-group-text bg-dark-input text-muted border-secondary"><i class="bi bi-key"></i></span>
+                        <input type="password" id="editPass" class="form-control" required placeholder="••••••••">
+                    </div>
+                </div>
+
+                <div class="col-12 col-md-6">
+                    <label for="editEstado" class="form-label">Estado</label>
+                    <select id="editEstado" class="form-select">
+                        <option value="Activo">Activo</option>
+                        <option value="Inactivo">Inactivo</option>
+                    </select>
+                </div>
+            </div>
+
+            <div class="d-flex justify-content-end gap-3 mt-4 pt-3 border-top border-secondary">
+                <button type="button" class="btn btn-pro-secondary" onclick="cerrarModalUsuario()">Cancelar</button>
+                <button type="button" class="btn btn-pro-primary" onclick="guardarUsuario()">
+                    <i class="bi bi-floppy me-2"></i>Guardar
+                </button>
+            </div>
+        </div>
+    </dialog>
+
+    <!-- Code JavaScript Integrated -->
+    <script>
+        const URL_SCRIPT = "https://script.google.com/macros/s/AKfycbxfeBs3tty9USQaPxS8ivq2gpMi_7PD29i8u6vo4qY44y2bgpQxkMZzB18rc-ucfdGv/exec";
+
+        window.datosUsuarios = [];
+
+        document.addEventListener("DOMContentLoaded", () => {
+            cargarUsuarios();
+
+            const btnActualizar = document.querySelector(".btn-actualizar");
+            if (btnActualizar) {
+                btnActualizar.addEventListener("click", cargarUsuarios);
+            }
+        });
+
+        function regresarPantalla() {
+            if (window.history.length > 1) {
+                window.history.back();
+            } else {
+                window.location.href = "index.html";
+            }
+        }
+
+        function cargarUsuarios() {
+            const tbody = document.querySelector("#tablaUsuarios tbody");
+            if (tbody) {
+                tbody.innerHTML = `<tr><td colspan="4" class="text-center py-5 text-muted"><div class="spinner-border spinner-border-sm text-cyan me-2" role="status"></div>Cargando usuarios... ⏳</td></tr>`;
+            }
+
+            const callbackName = 'callbackCargarUsuarios_' + Math.floor(Math.random() * 1000000);
+            const script = document.createElement('script');
+
+            window[callbackName] = function(datos) {
+                delete window[callbackName];
+                if (document.body.contains(script)) document.body.removeChild(script);
+
+                if (datos && datos.error) {
+                    if (tbody) tbody.innerHTML = `<tr><td colspan="4" class="text-center text-danger py-4">Error: ${datos.error}</td></tr>`;
+                    return;
+                }
+
+                window.datosUsuarios = Array.isArray(datos) ? datos : [];
+                renderizarTablaUsuarios(window.datosUsuarios);
+            };
+
+            script.onerror = function() {
+                delete window[callbackName];
+                if (document.body.contains(script)) document.body.removeChild(script);
+                if (tbody) {
+                    tbody.innerHTML = `<tr><td colspan="4" class="text-center text-danger py-4">Error de conexión con Google Sheets.</td></tr>`;
+                }
+            };
+
+            script.src = `${URL_SCRIPT}?prefix=${callbackName}&_nocache=${new Date().getTime()}`;
+            document.body.appendChild(script);
+        }
+
+        function getCampoUsuario(item, clavesPosibles, indicePosicional) {
+            if (!item) return "-";
+
+            const clavesItem = Object.keys(item);
+            
+            for (let cp of clavesPosibles) {
+                const cpLimpia = cp.toLowerCase().replace(/[^a-z0-9]/g, "");
+                for (let ki of clavesItem) {
+                    const kiLimpia = ki.toLowerCase().replace(/[^a-z0-9]/g, "");
+                    if (cpLimpia === kiLimpia) {
+                        let v = item[ki];
+                        if (v !== undefined && v !== null && String(v).trim() !== "") {
+                            return String(v).trim();
+                        }
+                    }
+                }
+            }
+
+            if (Array.isArray(item) && indicePosicional !== undefined) {
+                let vPos = item[indicePosicional];
+                if (vPos !== undefined && vPos !== null && String(vPos).trim() !== "") {
+                    return String(vPos).trim();
+                }
+            }
+
+            for (let ki of clavesItem) {
+                if (ki.toLowerCase().includes("estado") || ki.toLowerCase().includes("status") || ki.toLowerCase().includes("activo")) {
+                    let v = item[ki];
+                    if (v !== undefined && v !== null && String(v).trim() !== "") {
+                        return String(v).trim();
+                    }
+                }
+            }
+
+            return "Activo";
+        }
+
+        function renderizarTablaUsuarios(datos) {
+            const tbody = document.querySelector("#tablaUsuarios tbody");
+            if (!tbody) return;
+
+            tbody.innerHTML = "";
+
+            if (!Array.isArray(datos) || datos.length === 0) {
+                tbody.innerHTML = `<tr><td colspan="4" class="text-center text-muted py-4">No hay usuarios registrados.</td></tr>`;
+                return;
+            }
+
+            datos.forEach((item, index) => {
+                const tr = document.createElement("tr");
+                const filaExcel = item.filaExcel || (index + 2);
+
+                const usuario = getCampoUsuario(item, ["usuarios", "usuario", "usuarioasignado", "user"], 0);
+                const correo = getCampoUsuario(item, ["correo", "email", "correoelectronico"], 2);
+                const estado = getCampoUsuario(item, ["estado", "status", "passactivo/inactivo", "passactivo", "inactivo"], 3);
+
+                const esInactivo = estado.toLowerCase().includes("inactivo");
+                const badgeClass = esInactivo ? "badge-inactivo" : "badge-activo";
+                const textoEstado = esInactivo ? "Inactivo" : "Activo";
+
+                tr.innerHTML = `
+                    <td class="text-center">
+                        <div class="d-inline-flex gap-1">
+                            <button type="button" class="btn btn-sm btn-outline-info" onclick="abrirModalEditar(${index})" title="Editar">
+                                <i class="bi bi-pencil-square"></i>
+                            </button>
+                            <button type="button" class="btn btn-sm btn-outline-danger" onclick="eliminarUsuario(${filaExcel})" title="Eliminar">
+                                <i class="bi bi-trash"></i>
+                            </button>
+                        </div>
+                    </td>
+                    <td><strong class="text-white">${usuario}</strong></td>
+                    <td class="text-muted">${correo}</td>
+                    <td class="text-center"><span class="badge ${badgeClass}">${textoEstado}</span></td>
+                `;
+
+                tbody.appendChild(tr);
+            });
+        }
+
+        function abrirModalCrear() {
+            document.getElementById("modalTitulo").innerHTML = '<i class="bi bi-person-plus me-2 text-cyan"></i>Nuevo Usuario';
+            document.getElementById("editFilaExcel").value = "";
+            document.getElementById("editUsuario").value = "";
+            document.getElementById("editCorreo").value = "";
+            document.getElementById("editPass").value = "";
+            document.getElementById("editEstado").value = "Activo";
+
+            const modal = document.getElementById("modalUsuario");
+            if (modal.showModal) modal.showModal();
+            else modal.style.display = "block";
+        }
+
+        function abrirModalEditar(index) {
+            const item = window.datosUsuarios[index];
+            if (!item) return;
+
+            document.getElementById("modalTitulo").innerHTML = '<i class="bi bi-pencil-square me-2 text-cyan"></i>Editar Usuario';
+            document.getElementById("editFilaExcel").value = item.filaExcel || (index + 2);
+            
+            document.getElementById("editUsuario").value = getCampoUsuario(item, ["usuarios", "usuario", "usuarioasignado"], 0);
+            document.getElementById("editPass").value = getCampoUsuario(item, ["pass", "password", "contraseña"], 1);
+            document.getElementById("editCorreo").value = getCampoUsuario(item, ["correo", "email"], 2);
+            
+            const est = getCampoUsuario(item, ["estado", "status"], 3);
+            document.getElementById("editEstado").value = est.toLowerCase().includes("inactivo") ? "Inactivo" : "Activo";
+
+            const modal = document.getElementById("modalUsuario");
+            if (modal.showModal) modal.showModal();
+            else modal.style.display = "block";
+        }
+
+        function cerrarModalUsuario() {
+            const modal = document.getElementById("modalUsuario");
+            if (modal.close) modal.close();
+            else modal.style.display = "none";
+        }
+
+        function guardarUsuario() {
+            const filaExcel = document.getElementById("editFilaExcel").value;
+            const usuario = document.getElementById("editUsuario").value.trim();
+            const correo = document.getElementById("editCorreo").value.trim();
+            const pass = document.getElementById("editPass").value.trim();
+            const estado = document.getElementById("editEstado").value;
+
+            if (!usuario || !correo || !pass) {
+                alert("⚠️ Por favor completa todos los campos requeridos.");
+                return;
+            }
+
+            const accion = filaExcel ? "editar" : "agregar";
+            const datosPayload = { accion, filaExcel, usuario, pass, correo, estado };
+
+            const callbackName = 'callbackGuardarUsuario_' + Math.floor(Math.random() * 1000000);
+            const script = document.createElement('script');
+
+            window[callbackName] = function(respuesta) {
+                delete window[callbackName];
+                if (document.body.contains(script)) document.body.removeChild(script);
+
+                if (respuesta && respuesta.error) {
+                    alert("❌ Error: " + respuesta.error);
+                    return;
+                }
+
+                cerrarModalUsuario();
+                cargarUsuarios();
+            };
+
+            script.onerror = function() {
+                delete window[callbackName];
+                if (document.body.contains(script)) document.body.removeChild(script);
+                alert("❌ Error de conexión al guardar el usuario.");
+            };
+
+            const params = new URLSearchParams(datosPayload).toString();
+            script.src = `${URL_SCRIPT}?prefix=${callbackName}&${params}&_nocache=${new Date().getTime()}`;
+            document.body.appendChild(script);
+        }
+
+        function eliminarUsuario(filaExcel) {
+            if (!filaExcel) return;
+            if (!confirm(`¿Estás seguro de eliminar el registro de la fila ${filaExcel}?`)) return;
+
+            const callbackName = 'callbackEliminarUsuario_' + Math.floor(Math.random() * 1000000);
+            const script = document.createElement('script');
+
+            window[callbackName] = function(respuesta) {
+                delete window[callbackName];
+                if (document.body.contains(script)) document.body.removeChild(script);
+
+                if (respuesta && respuesta.error) {
+                    alert("❌ Error al eliminar: " + respuesta.error);
+                    return;
+                }
+
+                cargarUsuarios();
+            };
+
+            script.onerror = function() {
+                delete window[callbackName];
+                if (document.body.contains(script)) document.body.removeChild(script);
+                alert("❌ Error al intentar eliminar.");
+            };
+
+            script.src = `${URL_SCRIPT}?prefix=${callbackName}&accion=eliminar&filaExcel=${filaExcel}&_nocache=${new Date().getTime()}`;
+            document.body.appendChild(script);
+        }
+    </script>
+</body>
+</html>

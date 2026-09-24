@@ -1,0 +1,222 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Inventario de Equipos - Captura</title>
+    
+    <!-- Bootstrap 5.3 CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    
+    <!-- Iconos Bootstrap -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.0/font/bootstrap-icons.css">
+    
+    <!-- Tu archivo CSS Personalizado -->
+    <link rel="stylesheet" href="./Equipocomputo.css">
+</head>
+
+<body>
+
+    <main class="container py-5 d-flex align-items-center justify-content-center min-vh-100">
+        <div class="panel-pro p-4 p-md-5 w-100">
+            
+            <!-- Encabezado con navegación rápida -->
+            <div class="d-flex flex-wrap justify-content-between align-items-center mb-4 gap-3">
+                <a href="menu.html" class="btn btn-regresar">
+                    <i class="bi bi-arrow-left me-2"></i>Regresar a Selección
+                </a>
+                <a href="tabla.html" target="_blank" class="btn btn-registros">
+                    <i class="bi bi-table me-2"></i>Ver Registros Capturados
+                </a>
+            </div>
+
+            <header class="text-center mb-5">
+                <div class="badge badge-tech mb-2 px-3 py-2 rounded-pill">
+                    <i class="bi bi-pc-display me-1"></i> Formulario Hardware
+                </div>
+                <h1 class="display-6 fw-bold text-gradient mb-1">Inventario de Equipos</h1>
+                <p class="text-muted fs-6">Completa los campos correspondientes para registrar o actualizar el equipo de cómputo.</p>
+            </header>
+
+            <form id="formularioInventario">
+                
+                <!-- SECCIÓN 1: Datos Principales del Equipo -->
+                <div class="seccion-form mb-4 p-4">
+                    <h2 class="h6 fw-bold text-cyan mb-3"><i class="bi bi-cpu me-2"></i>Especificaciones del Equipo</h2>
+                    <div class="row g-3">
+                        
+                        <!-- ID -->
+                        <div class="col-12 col-md-4">
+                            <label for="id" class="form-label">ID Registro</label>
+                            <input type="text" class="form-control" id="id" name="id" placeholder="Ej: EQ-001">
+                        </div>
+
+                        <!-- Tipo de Equipo -->
+                        <div class="col-12 col-md-4">
+                            <label for="tipoEquipo" class="form-label">Tipo de equipo</label>
+                            <select class="form-select" id="tipoEquipo" name="tipoEquipo">
+                                <option value="">Seleccionar...</option>
+                                <option value="Laptop">Laptop</option>
+                                <option value="CPU">CPU</option>
+                            </select>
+                        </div>
+
+                        <!-- Marca -->
+                        <div class="col-12 col-md-4">
+                            <label for="marca" class="form-label">Marca</label>
+                            <input type="text" class="form-control" id="marca" name="marca" placeholder="HP, Dell, Lenovo...">
+                        </div>
+
+                        <!-- Modelo -->
+                        <div class="col-12 col-md-6">
+                            <label for="modelo" class="form-label">Modelo</label>
+                            <input type="text" class="form-control" id="modelo" name="modelo" placeholder="Modelo del equipo">
+                        </div>
+
+                        <!-- Identificador -->
+                        <div class="col-12 col-md-6">
+                            <label for="identificador" class="form-label">Identificador del Producto / S/N</label>
+                            <input type="text" class="form-control" id="identificador" name="identificador" placeholder="Número de Serie">
+                        </div>
+
+                        <!-- Procesador -->
+                        <div class="col-12 col-md-6">
+                            <label for="procesador" class="form-label">Procesador</label>
+                            <input type="text" class="form-control" id="procesador" name="procesador" placeholder="Intel i5, Ryzen 5...">
+                        </div>
+
+                        <!-- Memoria RAM -->
+                        <div class="col-12 col-md-3">
+                            <label for="ram" class="form-label">Memoria RAM</label>
+                            <select class="form-select" id="ram" name="ram">
+                                <option value="">Seleccionar...</option>
+                                <option value="4 GB">4 GB</option>
+                                <option value="8 GB">8 GB</option>
+                                <option value="16 GB">16 GB</option>
+                                <option value="24 GB">24 GB</option>
+                            </select>
+                        </div>
+
+                        <!-- Disco Duro -->
+                        <div class="col-12 col-md-3">
+                            <label for="disco" class="form-label">Disco Duro</label>
+                            <select class="form-select" id="disco" name="disco">
+                                <option value="">Seleccionar...</option>
+                                <option value="256 GB">256 GB</option>
+                                <option value="500 GB">500 GB</option>
+                                <option value="1 TB">1 TB</option>
+                                <option value="2 TB">2 TB</option>
+                            </select>
+                        </div>
+
+                        <!-- Sistema Operativo -->
+                        <div class="col-12 col-md-6">
+                            <label for="sistema" class="form-label">Sistema Operativo</label>
+                            <input type="text" class="form-control" id="sistema" name="sistema" placeholder="Windows 11, Pro, Linux...">
+                        </div>
+
+                        <!-- Estado -->
+                        <div class="col-12 col-md-6">
+                            <label for="estado" class="form-label">Estado del Equipo</label>
+                            <select class="form-select" id="estado" name="estado">
+                                <option value="">Seleccionar...</option>
+                                <option value="Nuevo">Nuevo</option>
+                                <option value="Usado">Usado</option>
+                                <option value="En reparación">En reparación</option>
+                            </select>
+                        </div>
+
+                    </div>
+                </div>
+
+                <!-- SECCIÓN 2: Asignación y Ubicación -->
+                <div class="seccion-form mb-4 p-4">
+                    <h2 class="h6 fw-bold text-cyan mb-3"><i class="bi bi-person-gear me-2"></i>Asignación y Ubicación</h2>
+                    <div class="row g-3">
+                        
+                        <!-- Usuario -->
+                        <div class="col-12 col-md-4">
+                            <label for="usuario" class="form-label">Usuario Asignado</label>
+                            <input type="text" class="form-control" id="usuario" name="usuario" placeholder="Nombre completo">
+                        </div>
+
+                        <!-- Departamento -->
+                        <div class="col-12 col-md-4">
+                            <label for="departamento" class="form-label">Departamento</label>
+                            <input type="text" class="form-control" id="departamento" name="departamento" placeholder="Sistemas, Ventas...">
+                        </div>
+
+                        <!-- Ubicación -->
+                        <div class="col-12 col-md-4">
+                            <label for="ubicacion" class="form-label">Ubicación</label>
+                            <input type="text" class="form-control" id="ubicacion" name="ubicacion" placeholder="Piso 2, Edificio A...">
+                        </div>
+
+                        <!-- Responsiva -->
+                        <div class="col-12">
+                            <label for="responsiva" class="form-label">Responsiva Firmada</label>
+                            <select class="form-select" id="responsiva" name="responsiva">
+                                <option value="">Seleccionar...</option>
+                                <option value="SI">SI</option>
+                                <option value="NO">NO</option>
+                            </select>
+                        </div>
+
+                    </div>
+                </div>
+
+                <!-- SECCIÓN 3: Periféricos Vinculados -->
+                <div class="seccion-form mb-4 p-4">
+                    <h2 class="h6 fw-bold text-cyan mb-3"><i class="bi bi-keyboard me-2"></i>Periféricos Asignados</h2>
+                    <div class="row g-3">
+                        
+                        <div class="col-12 col-md-6">
+                            <label for="teclado" class="form-label"><i class="bi bi-keyboard text-muted me-1"></i> ID Teclado</label>
+                            <input type="text" class="form-control" id="teclado" name="teclado" placeholder="ID / S/N Teclado">
+                        </div>
+
+                        <div class="col-12 col-md-6">
+                            <label for="mouse" class="form-label"><i class="bi bi-mouse text-muted me-1"></i> ID Mouse</label>
+                            <input type="text" class="form-control" id="mouse" name="mouse" placeholder="ID / S/N Mouse">
+                        </div>
+
+                        <div class="col-12 col-md-6">
+                            <label for="camara" class="form-label"><i class="bi bi-webcam text-muted me-1"></i> ID VideoCámara</label>
+                            <input type="text" class="form-control" id="camara" name="camara" placeholder="ID Cámara">
+                        </div>
+
+                        <div class="col-12 col-md-6">
+                            <label for="diademas" class="form-label"><i class="bi bi-headset text-muted me-1"></i> ID Diadema / Auriculares</label>
+                            <input type="text" class="form-control" id="diademas" name="diademas" placeholder="ID Audífonos">
+                        </div>
+
+                    </div>
+                </div>
+
+                <!-- SECCIÓN 4: Observaciones -->
+                <div class="seccion-form mb-4 p-4">
+                    <label for="observaciones" class="form-label fw-bold text-cyan mb-2"><i class="bi bi-chat-right-text me-2"></i>Observaciones Adicionales</label>
+                    <textarea class="form-control" id="observaciones" name="observaciones" rows="3" placeholder="Detalles de mantenimiento, fallas o condición..."></textarea>
+                </div>
+
+                <!-- BOTONES DE ACCIÓN -->
+                <div class="d-flex flex-wrap align-items-center justify-content-end gap-3 mt-4 pt-2">
+                    <button type="reset" class="btn btn-pro-secondary">
+                        <i class="bi bi-eraser me-2"></i>Limpiar Campos
+                    </button>
+                    <button type="submit" class="btn btn-pro-primary">
+                        <i class="bi bi-check-circle me-2"></i>Guardar Equipo
+                    </button>
+                </div>
+
+            </form>
+        </div>
+    </main>
+
+    <!-- Bootstrap 5.3 JS -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="./Equipocomputo.js"></script>
+</body>
+
+</html>

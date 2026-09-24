@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Selección de Formato - Inventario</title>
+
+    <!-- Bootstrap 5.3 CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    
+    <!-- Iconos Bootstrap -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.0/font/bootstrap-icons.css">
+    
+    <!-- Archivo CSS Personalizado -->
+    <link rel="stylesheet" href="menu.css">
+</head>
+<body>
+
+    <main class="container py-5 d-flex align-items-center justify-content-center min-vh-100">
+        <div class="panel-pro p-4 p-md-5 w-100">
+            
+            <!-- Botón de Regresar -->
+            <div class="mb-4">
+                <a href="Inicio.html" class="btn btn-regresar">
+                    <i class="bi bi-arrow-left me-2"></i>Volver al Inicio
+                </a>
+            </div>
+
+            <!-- Encabezado -->
+            <header class="text-center mb-5">
+                <h1 class="display-6 fw-bold text-gradient mb-2">Selecciona el Archivo a Capturar / Editar</h1>
+                <p class="text-muted lead fs-6">Elige la lista o categoría correspondiente para ingresar o modificar datos.</p>
+            </header>
+
+            <!-- Lista de Formatos -->
+            <div class="d-flex flex-column gap-3">
+                
+                <!-- Item 1: Equipos de Cómputo -->
+                <div class="item-formato p-3 p-md-4 d-flex flex-column flex-md-row align-items-start align-items-md-center justify-content-between gap-3">
+                    <div class="d-flex align-items-center gap-3">
+                        <div class="icono-item bg-cyan text-cyan">
+                            <i class="bi bi-laptop fs-4"></i>
+                        </div>
+                        <div>
+                            <span class="badge badge-tech mb-1">Excel / BD</span>
+                            <h3 class="h6 fw-bold text-white mb-1">Registros de Equipos de Cómputo</h3>
+                            <p class="text-secondary small mb-0">Laptops, Desktops, Impresoras (SIP / PC_EC)</p>
+                        </div>
+                    </div>
+                    <a href="index.html" class="btn btn-pro-action w-100 w-md-auto">
+                        <span>Editar / Capturar</span>
+                        <i class="bi bi-pencil-square ms-2"></i>
+                    </a>
+                </div>
+
+                <!-- Item 2: Usuarios SIP -->
+                <div class="item-formato p-3 p-md-4 d-flex flex-column flex-md-row align-items-start align-items-md-center justify-content-between gap-3">
+                    <div class="d-flex align-items-center gap-3">
+                        <div class="icono-item bg-blue text-blue">
+                            <i class="bi bi-person-badge fs-4"></i>
+                        </div>
+                        <div>
+                            <span class="badge badge-tech mb-1">Excel / BD</span>
+                            <h3 class="h6 fw-bold text-white mb-1">Usuarios SIP</h3>
+                            <p class="text-secondary small mb-0">Gestión de Correos, Cuentas y Accesos</p>
+                        </div>
+                    </div>
+                    <a href="InventariosCuentas.html" class="btn btn-pro-action w-100 w-md-auto">
+                        <span>Editar / Capturar</span>
+                        <i class="bi bi-pencil-square ms-2"></i>
+                    </a>
+                </div>
+
+                <!-- Item 3: Hardware y Cambios -->
+                <div class="item-formato p-3 p-md-4 d-flex flex-column flex-md-row align-items-start align-items-md-center justify-content-between gap-3">
+                    <div class="d-flex align-items-center gap-3">
+                        <div class="icono-item bg-amber text-amber">
+                            <i class="bi bi-tools fs-4"></i>
+                        </div>
+                        <div>
+                            <span class="badge badge-tech mb-1">Excel / BD</span>
+                            <h3 class="h6 fw-bold text-white mb-1">Equipos Descompuestos / Cambios</h3>
+                            <p class="text-secondary small mb-0">Control de tóners, tintas y reemplazos de Software/Hardware</p>
+                        </div>
+                    </div>
+                    <a href="InventariosHard.html" class="btn btn-pro-action w-100 w-md-auto">
+                        <span>Editar / Capturar</span>
+                        <i class="bi bi-pencil-square ms-2"></i>
+                    </a>
+                </div>
+
+                <!-- Item 4: Redes y Telefonía -->
+                <div class="item-formato p-3 p-md-4 d-flex flex-column flex-md-row align-items-start align-items-md-center justify-content-between gap-3">
+                    <div class="d-flex align-items-center gap-3">
+                        <div class="icono-item bg-emerald text-emerald">
+                            <i class="bi bi-router fs-4"></i>
+                        </div>
+                        <div>
+                            <span class="badge badge-tech mb-1">Excel / BD</span>
+                            <h3 class="h6 fw-bold text-white mb-1">Equipos de Red y Telefonía</h3>
+                            <p class="text-secondary small mb-0">Switches, routers, teléfonos IP y extensiones</p>
+                        </div>
+                    </div>
+                    <a href="formulario-redes.html" class="btn btn-pro-action w-100 w-md-auto">
+                        <span>Editar / Capturar</span>
+                        <i class="bi bi-pencil-square ms-2"></i>
+                    </a>
+                </div>
+
+            </div>
+        </div>
+    </main>
+
+    <!-- Bootstrap 5.3 JS -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>

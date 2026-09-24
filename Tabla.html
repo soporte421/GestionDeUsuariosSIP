@@ -1,0 +1,191 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Inventario de Equipos - Tabla de Registros</title>
+    
+    <!-- Bootstrap 5.3 CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    
+    <!-- Bootstrap Icons -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.0/font/bootstrap-icons.css">
+    
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="./registros.css">
+</head>
+<body>
+
+    <main class="container-fluid py-4 px-md-5 min-vh-100 d-flex flex-column justify-content-center">
+        <div class="panel-pro p-4 p-md-5 w-100 mx-auto">
+            
+            <!-- Header section -->
+            <div class="d-flex flex-wrap justify-content-between align-items-center mb-4 gap-3">
+                <div>
+                    <span class="badge badge-tech mb-2 px-3 py-2 rounded-pill">
+                        <i class="bi bi-database me-1"></i> Base de Datos
+                    </span>
+                    <h1 class="display-6 fw-bold text-gradient mb-0">Registros de Equipos</h1>
+                </div>
+                <button class="btn btn-pro-action" onclick="cargarDatos()">
+                    <i class="bi bi-arrow-clockwise me-2"></i>Actualizar Tabla
+                </button>
+            </div>
+
+            <!-- Scrollable Table Wrapper -->
+            <div class="tabla-scroll custom-scrollbar mb-4">
+                <table id="tablaEquipos" class="table table-hover align-middle mb-0">
+                    <thead>
+                        <tr>
+                            <th scope="col" class="text-center">Acciones</th>
+                            <th scope="col">ID</th>
+                            <th scope="col">Tipo</th>
+                            <th scope="col">Marca</th>
+                            <th scope="col">Modelo</th>
+                            <th scope="col">Identificador</th>
+                            <th scope="col">Procesador</th>
+                            <th scope="col">RAM</th>
+                            <th scope="col">Disco</th>
+                            <th scope="col">Sistema</th>
+                            <th scope="col">Usuario</th>
+                            <th scope="col">Departamento</th>
+                            <th scope="col">Ubicación</th>
+                            <th scope="col">Estado</th>
+                            <th scope="col">Observaciones</th>
+                            <th scope="col">Teclado</th>
+                            <th scope="col">Mouse</th>
+                            <th scope="col">Cámara</th>
+                            <th scope="col">Diademas</th>
+                            <th scope="col">Responsiva</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <!-- Se cargan dinámicamente desde JS -->
+                    </tbody>
+                </table>
+            </div>
+
+            <!-- Botón de regresar -->
+            <div class="d-flex justify-content-center pt-2">
+                <a href="menu.html" class="btn btn-regresar">
+                    <i class="bi bi-arrow-left me-2"></i>Regresar al Menú
+                </a>
+            </div>
+
+        </div>
+    </main>
+
+    <!-- MODAL DE EDICIÓN -->
+    <dialog id="modalEditar" class="modal-dialog-custom">
+        <div class="modal-contenido-custom p-4 p-md-5">
+            <div class="d-flex justify-content-between align-items-center mb-4 border-bottom border-secondary pb-3">
+                <h3 class="h5 fw-bold text-gradient mb-0">
+                    <i class="bi bi-pencil-square me-2 text-cyan"></i>Editar Registro de Equipo
+                </h3>
+                <button type="button" class="btn-close btn-close-white" onclick="cerrarModal()"></button>
+            </div>
+            
+            <form id="formEditar" method="dialog">
+                <input type="hidden" id="editFilaExcel">
+                
+                <div class="row g-3 modal-body-custom">
+                    <div class="col-12 col-md-4">
+                        <label for="editId" class="form-label">ID</label>
+                        <input type="text" class="form-control" id="editId">
+                    </div>
+                    <div class="col-12 col-md-4">
+                        <label for="editTipo" class="form-label">Tipo de Equipo</label>
+                        <input type="text" class="form-control" id="editTipo">
+                    </div>
+                    <div class="col-12 col-md-4">
+                        <label for="editMarca" class="form-label">Marca</label>
+                        <input type="text" class="form-control" id="editMarca">
+                    </div>
+
+                    <div class="col-12 col-md-6">
+                        <label for="editModelo" class="form-label">Modelo</label>
+                        <input type="text" class="form-control" id="editModelo">
+                    </div>
+                    <div class="col-12 col-md-6">
+                        <label for="editIdentificador" class="form-label">Identificador</label>
+                        <input type="text" class="form-control" id="editIdentificador">
+                    </div>
+
+                    <div class="col-12 col-md-4">
+                        <label for="editProcesador" class="form-label">Procesador</label>
+                        <input type="text" class="form-control" id="editProcesador">
+                    </div>
+                    <div class="col-12 col-md-4">
+                        <label for="editRam" class="form-label">RAM</label>
+                        <input type="text" class="form-control" id="editRam">
+                    </div>
+                    <div class="col-12 col-md-4">
+                        <label for="editDisco" class="form-label">Disco</label>
+                        <input type="text" class="form-control" id="editDisco">
+                    </div>
+
+                    <div class="col-12 col-md-6">
+                        <label for="editSistema" class="form-label">Sistema Operativo</label>
+                        <input type="text" class="form-control" id="editSistema">
+                    </div>
+                    <div class="col-12 col-md-6">
+                        <label for="editUsuario" class="form-label">Usuario</label>
+                        <input type="text" class="form-control" id="editUsuario">
+                    </div>
+
+                    <div class="col-12 col-md-4">
+                        <label for="editDepartamento" class="form-label">Departamento</label>
+                        <input type="text" class="form-control" id="editDepartamento">
+                    </div>
+                    <div class="col-12 col-md-4">
+                        <label for="editUbicacion" class="form-label">Ubicación</label>
+                        <input type="text" class="form-control" id="editUbicacion">
+                    </div>
+                    <div class="col-12 col-md-4">
+                        <label for="editEstado" class="form-label">Estado</label>
+                        <input type="text" class="form-control" id="editEstado">
+                    </div>
+
+                    <div class="col-12">
+                        <label for="editObservaciones" class="form-label">Observaciones</label>
+                        <input type="text" class="form-control" id="editObservaciones">
+                    </div>
+
+                    <div class="col-12 col-md-3">
+                        <label for="editTeclado" class="form-label">Teclado</label>
+                        <input type="text" class="form-control" id="editTeclado">
+                    </div>
+                    <div class="col-12 col-md-3">
+                        <label for="editMouse" class="form-label">Mouse</label>
+                        <input type="text" class="form-control" id="editMouse">
+                    </div>
+                    <div class="col-12 col-md-3">
+                        <label for="editCamara" class="form-label">Cámara</label>
+                        <input type="text" class="form-control" id="editCamara">
+                    </div>
+                    <div class="col-12 col-md-3">
+                        <label for="editDiademas" class="form-label">Diademas</label>
+                        <input type="text" class="form-control" id="editDiademas">
+                    </div>
+
+                    <div class="col-12">
+                        <label for="editResponsiva" class="form-label">Responsiva</label>
+                        <input type="text" class="form-control" id="editResponsiva">
+                    </div>
+                </div>
+
+                <div class="d-flex justify-content-end gap-3 mt-4 pt-3 border-top border-secondary">
+                    <button type="button" class="btn btn-pro-secondary" onclick="cerrarModal()">Cancelar</button>
+                    <button type="button" class="btn btn-pro-action" onclick="guardarEdicion()">
+                        <i class="bi bi-floppy me-2"></i>Guardar Cambios
+                    </button>
+                </div>
+            </form>
+        </div>
+    </dialog>
+
+    <!-- Bootstrap 5.3 JS -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="./tabla.js"></script>
+</body>
+</html>
